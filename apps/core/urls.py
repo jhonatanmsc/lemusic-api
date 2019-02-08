@@ -13,27 +13,10 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-import pdb
-
-from django.conf import settings
-from django.contrib import admin
 from django.urls import path, include
-from rest_framework import routers
 
-from apps.core.urls import core_urls
-from apps.localidade.urls import localidade_urls
+from apps.core.views import HomeView
 
-app_urls = localidade_urls + core_urls
-urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('jet/', include('jet.urls', 'jet')),
-    path('', include('rest_framework.urls')),
-    path('', include(app_urls)),
+core_urls = [
+    path('', HomeView.as_view(), name=HomeView.name),
 ]
-
-if settings.DEBUG:
-    import debug_toolbar
-    urlpatterns = [
-        path('__debug__/', include(debug_toolbar.urls)),
-
-    ] + urlpatterns
