@@ -14,10 +14,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path, include
-
+from rest_framework import routers
 from apps.localidade.views import *
 
-localidade_urls = [
-    path('cidade/api/', CidadeAPIList.as_view(), name=CidadeAPIList.name),
-    path('bairro/api/', BairroAPIList.as_view(), name=BairroAPIList.name)
-]
+
+localidade_urls = routers.DefaultRouter()
+localidade_urls.register('cidade/api', CidadeViewSet)
+localidade_urls.register('bairro/api', BairroViewSet)
+localidade_urls.register('endereco/api', EnderecoViewSet)

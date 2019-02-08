@@ -17,6 +17,6 @@ from django.urls import path, include
 
 from apps.core.views import HomeView
 
-core_urls = [
-    path('', HomeView.as_view(), name=HomeView.name),
-]
+# core_urls = [
+#     path('', HomeView.as_view(), name=HomeView.name),
+# ]

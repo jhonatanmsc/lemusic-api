@@ -18,17 +18,15 @@ import pdb
 from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework import routers
 
-from apps.core.urls import core_urls
 from apps.localidade.urls import localidade_urls
 
-app_urls = localidade_urls + core_urls
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('jet/', include('jet.urls', 'jet')),
     path('', include('rest_framework.urls')),
-    path('', include(app_urls)),
+    path('', include(localidade_urls.urls)),
 ]
 
 if settings.DEBUG:
