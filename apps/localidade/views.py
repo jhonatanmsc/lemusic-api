@@ -7,21 +7,18 @@ from apps.localidade.serializers import CidadeSerializer, BairroSerializer, Ende
 
 
 class CidadeViewSet(ModelViewSet):
-    name = 'cidade-api'
     queryset = Cidade.objects.all()
     serializer_class = CidadeSerializer
     permission_classes = (IsAdminUser,)
 
 
 class BairroViewSet(ModelViewSet):
-    name = 'bairro-api'
     queryset = Bairro.objects.all()
     serializer_class = BairroSerializer
     permission_classes = (IsAdminUser,)
 
 
 class EnderecoViewSet(ModelViewSet):
-    name = 'endereco-api'
     queryset = Endereco.objects.all()
     serializer_class = EnderecoSerializer
     permission_classes = (IsAdminUser,)

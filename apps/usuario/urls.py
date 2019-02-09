@@ -16,6 +16,10 @@ Including another URLconf
 from django.urls import path, include
 from rest_framework import routers
 
-from apps.core.views import HomeView
+from apps.core.urls import router
+from apps.usuario.views import *
 
-router = routers.DefaultRouter()
+usuario_urls = router
+usuario_urls.register('usuario/api', UsuarioViewSet)
+usuario_urls.register('grupo/api', GroupViewSet)
+usuario_urls.register('permission/api', PermissionViewSet)

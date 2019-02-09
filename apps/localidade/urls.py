@@ -15,10 +15,12 @@ Including another URLconf
 """
 from django.urls import path, include
 from rest_framework import routers
+
+from apps.core.urls import router
 from apps.localidade.views import *
 
 
-localidade_urls = routers.DefaultRouter()
+localidade_urls = router
 localidade_urls.register('cidade/api', CidadeViewSet)
 localidade_urls.register('bairro/api', BairroViewSet)
 localidade_urls.register('endereco/api', EnderecoViewSet)

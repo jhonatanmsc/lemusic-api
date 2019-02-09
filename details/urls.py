@@ -20,13 +20,14 @@ from django.contrib import admin
 from django.urls import path, include
 
 from apps.localidade.urls import localidade_urls
+from apps.usuario.urls import usuario_urls
 
-
+app_urls = localidade_urls.urls + usuario_urls.urls
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('jet/', include('jet.urls', 'jet')),
     path('', include('rest_framework.urls')),
-    path('', include(localidade_urls.urls)),
+    path('', include(app_urls)),
 ]
 
 if settings.DEBUG:
