@@ -14,7 +14,7 @@ class JSONWebTokenAuthentication(TokenAuthentication):
     def authenticate_credentials(self, key):
         try:
             payload = jwt.decode(key, settings.SECRET_KEY)
-            user = User.objects.get(email=payload['username'])
+            user = User.objects.get(email=payload['email'])
         except (jwt.DecodeError, User.DoesNotExist):
             raise exceptions.AuthenticationFailed('Invalid token')
         except jwt.ExpiredSignatureError:

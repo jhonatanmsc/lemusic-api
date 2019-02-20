@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
-import os
+import os, datetime
 from datetime import timedelta
 
 from decouple import config
@@ -87,6 +87,12 @@ REST_FRAMEWORK = {
         'anon': '1000/day',
         'user': '1000/day'
     }
+}
+
+PYJWT = {
+    'iat': datetime.datetime.utcnow(),
+    'nbf': datetime.datetime.utcnow() + datetime.timedelta(minutes=-5),
+    'exp': datetime.datetime.utcnow() + datetime.timedelta(days=7)
 }
 
 ROOT_URLCONF = 'details.urls'

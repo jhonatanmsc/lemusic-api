@@ -21,7 +21,7 @@ from django.urls import path, include
 
 from apps.localidade.urls import localidade_urls
 from apps.usuario.urls import usuario_urls
-from rest_framework_simplejwt import views as jwt_views
+# from rest_framework_simplejwt import views as jwt_views
 
 from apps.usuario.views import ObtainToken
 
@@ -32,7 +32,7 @@ urlpatterns = [
     path('', include('rest_framework.urls')),
     path('', include(app_urls)),
     path('token/api/', ObtainToken.as_view(), name='token_obtain_pair'),
-    path('token/api/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
+    # path('token/api/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
 ]
 
 if settings.DEBUG:
