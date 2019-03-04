@@ -17,7 +17,9 @@ from apps.core.urls import router
 from apps.localidade.views import *
 
 
-localidade_urls = router
-localidade_urls.register('cidade/api', CidadeViewSet)
-localidade_urls.register('bairro/api', BairroViewSet)
-localidade_urls.register('endereco/api', EnderecoViewSet)
+localidade_api_urls = router
+localidade_api_urls.register('cidade/api', CidadeViewSet)
+localidade_api_urls.register('bairro/api', BairroViewSet)
+localidade_api_urls.register('endereco/api', EnderecoViewSet)
+
+localidade_urls = []

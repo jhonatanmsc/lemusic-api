@@ -19,7 +19,13 @@ from rest_framework import routers
 from apps.core.urls import router
 from apps.usuario.views import *
 
-usuario_urls = router
-usuario_urls.register('usuario/api', UsuarioViewSet)
-usuario_urls.register('grupo/api', GroupViewSet)
-usuario_urls.register('permission/api', PermissionViewSet)
+usuario_api_urls = router
+usuario_api_urls.register('usuario/api', UsuarioViewSet)
+usuario_api_urls.register('grupo/api', GroupViewSet)
+usuario_api_urls.register('permission/api', PermissionViewSet)
+
+usuario_urls = [
+    path('token/api/', ObtainToken.as_view(), name='token_obtain'),
+    path('token/check/api/', CheckToken.as_view(), name='token_check'),
+    path('token/refresh/api/', RefreshToken.as_view(), name='token_refresh')
+]

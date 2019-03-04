@@ -19,20 +19,17 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
 
-from apps.localidade.urls import localidade_urls
-from apps.usuario.urls import usuario_urls
-# from rest_framework_simplejwt import views as jwt_views
+from apps.localidade.urls import localidade_api_urls, localidade_urls
+from apps.usuario.urls import usuario_api_urls, usuario_urls
 
-from apps.usuario.views import ObtainToken
-
-app_urls = localidade_urls.urls + usuario_urls.urls
+api_urls = localidade_api_urls.urls + usuario_api_urls.urls
+app_urls = usuario_urls
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('jet/', include('jet.urls', 'jet')),
     path('', include('rest_framework.urls')),
+    path('', include(api_urls)),
     path('', include(app_urls)),
-    path('token/api/', ObtainToken.as_view(), name='token_obtain_pair'),
-    # path('token/api/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
 ]
 
 if settings.DEBUG:

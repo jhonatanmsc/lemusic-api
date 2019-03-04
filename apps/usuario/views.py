@@ -52,11 +52,61 @@ class ObtainToken(APIView):
                 token = jwt.encode({
                     'user_id': user.id,
                     'email': user.email,
-                    'iat': PYJWT['iat'],
-                    'nbf': PYJWT['nbf'],
-                    'exp': PYJWT['exp']
+                    'iat': datetime.datetime.utcnow(),
+                    'nbf': datetime.datetime.utcnow() + datetime.timedelta(minutes=-5),
+                    'exp': datetime.datetime.utcnow() + datetime.timedelta(days=7)
                 }, settings.SECRET_KEY)
                 return Response({'token': token})
             except User.DoesNotExist:
-                pass
+                return Response({'error': 'Usuário não existe.'}, status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CheckToken(APIView):
+    throttle_classes = ()
+    permission_classes = ()
+
+    def post(self, request):
+        token = jwt.decode(request.data['token'], settings.SECRET_KEY)
+        data_exp = datetime.datetime.fromtimestamp(token['exp'])
+        if data_exp > datetime.datetime.utcnow():
+            diff = data_exp - datetime.datetime.utcnow()
+            status_token = {
+                'status': 'Token OK.',
+                'days_to_expire': diff.days
+            }
+        else:
+            status_token = {
+                'status': 'Token Expired.',
+                'days_to_expire': -1
+            }
+        return Response(status_token)
+
+
+class RefreshToken(APIView):
+    throttle_classes = ()
+    permission_classes = ()
+    parser_classes = (parsers.FormParser, parsers.MultiPartParser, parsers.JSONParser,)
+    renderer_classes = (renderers.JSONRenderer,)
+    serializer_class = AuthTokenSerializer
+
+    def post(self, request):
+        token = jwt.decode(request.data['token'], settings.SECRET_KEY)
+        diff = datetime.datetime.fromtimestamp(token['exp']) - datetime.datetime.utcnow()
+        if diff.days == 0:
+            user = Usuario.objects.get(id=token['user_id'])
+            serializer = self.serializer_class(data={'username': token['email'], 'password': request.data['password']})
+            if serializer.is_valid():
+                try:
+                    user = Usuario.objects.get(id=token['user_id'])
+                    token = jwt.encode({
+                        'user_id': user.id,
+                        'email': user.email,
+                        'iat': datetime.datetime.utcnow(),
+                        'nbf': datetime.datetime.utcnow() + datetime.timedelta(minutes=-5),
+                        'exp': datetime.datetime.utcnow() + datetime.timedelta(days=7)
+                    }, settings.SECRET_KEY)
+                    return Response({'token': token})
+                except User.DoesNotExist:
+                    return Response({'error': 'Usuário não existe.'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'error': 'Refresh somente no ultimo dia de validade'}, status=status.HTTP_400_BAD_REQUEST)
